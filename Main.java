@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         List<String> folders = Arrays.asList("C:/testfiles/games/src/", "C:/testfiles/games/res/",
                 "C:/testfiles/games/savegames/", "C:/testfiles/games/temp/", "C:/testfiles/games/src/main/",
@@ -16,14 +16,14 @@ public class Main {
         List<String> files = Arrays.asList("C:/testfiles/games/src/main/Main.java",
                 "C:/testfiles/games/src/main/Utils.java", "C:/testfiles/games/temp/temp.txt");
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder logs = new StringBuilder();
 
         //create folders
         for (String str: folders) {
             File newdir = new File(str);
             if(newdir.mkdir())
                 System.out.println("Folder has been created");
-                sb.append("Folder \""+ str +"\" has been created\n");
+                logs.append("Folder \""+ str +"\" has been created\n");
         }
 
         //create files
@@ -32,14 +32,20 @@ public class Main {
             try {
                 if (newfile.createNewFile())
                     System.out.println("File has been created");
-                sb.append("File \""+ str +"\" has been created\n");
+                logs.append("File \""+ str +"\" has been created\n");
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
+                logs.append(ex.getMessage()+"\n");
             }
         }
 
-        FileWriter writer = new FileWriter("C:/testfiles/games/temp/temp.txt");
-        writer.append(sb);
-        writer.close();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter("C:/testfiles/games/temp/temp.txt");
+            writer.append(logs);
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
